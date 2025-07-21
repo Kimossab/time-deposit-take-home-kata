@@ -1,0 +1,8 @@
+// Interest constants
+export const MIN_DAYS_FOR_INTEREST = 30;
+export const MAX_STUDENT_DAYS_FOR_INTEREST = 365;
+export const MIN_PREMIUM_DAYS_FOR_INTEREST = 45;
+
+export const BASIC_INTEREST_RATE = 0.01;
+export const STUDENT_INTEREST_RATE = 0.03;
+export const PREMIUM_INTEREST_RATE = 0.05;
