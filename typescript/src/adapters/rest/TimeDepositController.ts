@@ -11,7 +11,7 @@ export class TimeDepositController {
 
   async getTimeDeposit(req: Request, res: Response) {
     try {
-      const timeDeposits = this.timeDepositService.getTimeDeposits()
+      const timeDeposits = await this.timeDepositService.getTimeDeposits()
       res.status(200).json({ timeDeposits });
     } catch (err: any) {
       res.status(400).json({ error: err.message });
@@ -20,7 +20,7 @@ export class TimeDepositController {
 
   async patchTimeDeposit(req: Request, res: Response) {
     try {
-      const timeDeposit = this.timeDepositService.updateTimeDeposit()
+      const timeDeposit = await this.timeDepositService.updateTimeDeposits()
       res.status(204).json({ timeDeposit });
     } catch (err: any) {
       res.status(400).json({ error: err.message });

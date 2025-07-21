@@ -1,6 +1,6 @@
-import { TimeDeposit } from "./dto/TimeDeposit"
+import { TimeDeposit } from './dto/TimeDeposit';
 
 export interface TimeDepositServicePort {
-  updateTimeDeposit(): TimeDeposit;
-  getTimeDeposits(): TimeDeposit[];
+  updateTimeDeposits(): Promise<TimeDeposit[]>;
+  getTimeDeposits(): Promise<TimeDeposit[]>;
 }
