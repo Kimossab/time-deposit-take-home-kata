@@ -1,15 +1,45 @@
-import { PrismaClient } from "../../generated/prisma";
+import { Prisma, PrismaClient, TimeDeposit } from "../../generated/prisma";
 import { mockDeep } from 'jest-mock-extended';
 import { TimeDepositRepository } from '../adapters/database/TimeDepositRepository';
-import { mockTimeDepositsDB } from "./mockData/timeDepositsDB";
+import { Decimal } from "../../generated/prisma/runtime/library";
 
 const mockPrisma = mockDeep<PrismaClient>();
 
-describe("Get Time Deposits", () => {
+describe("TimeDepositRepository", () => {
   const repository = new TimeDepositRepository(mockPrisma);
 
   beforeAll(() => {
-    mockPrisma.timeDeposit.findMany.mockResolvedValue(mockTimeDepositsDB)
+    mockPrisma.timeDeposit.update.mockResolvedValue({} as TimeDeposit);
+    mockPrisma.timeDeposit.findMany.mockResolvedValue([
+      {
+        id: 1,
+        planType: 'basic',
+        days: 10,
+        balance: Decimal(200),
+        withdrawals: [
+          {
+            id: 1,
+            timeDepositId: 1,
+            amount: Decimal(10),
+            date: new Date(2025, 5, 1, 12, 35)
+          }
+        ]
+      },
+      {
+        id: 2,
+        planType: 'student',
+        days: 10,
+        balance: Decimal(200),
+        withdrawals: []
+      },
+      {
+        id: 3,
+        planType: 'premium',
+        days: 10,
+        balance: Decimal(200),
+        withdrawals: []
+      },
+    ] as Prisma.TimeDepositGetPayload<{ include: { withdrawals: true } }>[])
   })
 
   test('Should correctly get and map data from the database', async () => {
@@ -32,54 +62,86 @@ describe("Get Time Deposits", () => {
       },
       {
         id: 2,
-        planType: 'basic',
-        days: 400,
-        balance: 300,
-        withdrawals: []
-      },
-      { id: 3, planType: 'basic', days: 60, balance: 400, withdrawals: [] },
-      {
-        id: 4,
         planType: 'student',
         days: 10,
         balance: 200,
         withdrawals: []
       },
       {
-        id: 5,
-        planType: 'student',
-        days: 400,
-        balance: 300,
-        withdrawals: []
-      },
-      {
-        id: 6,
-        planType: 'student',
-        days: 60,
-        balance: 400,
-        withdrawals: []
-      },
-      {
-        id: 7,
+        id: 3,
         planType: 'premium',
         days: 10,
         balance: 200,
-        withdrawals: []
-      },
-      {
-        id: 8,
-        planType: 'premium',
-        days: 400,
-        balance: 300,
-        withdrawals: []
-      },
-      {
-        id: 9,
-        planType: 'premium',
-        days: 60,
-        balance: 400,
         withdrawals: []
       }
-    ])
+    ]);
+  });
+
+  test('Should correctly update the balances and then return the data', async () => {
+    const result = await repository.updateBalances([
+      {
+        id: 1,
+        planType: 'basic',
+        days: 10,
+        balance: 200,
+        withdrawals: [
+          {
+            id: 1,
+            timeDepositId: 1,
+            amount: 10,
+            date: new Date(2025, 5, 1, 12, 35)
+          }
+        ]
+      },
+      {
+        id: 2,
+        planType: 'student',
+        days: 10,
+        balance: 200,
+        withdrawals: []
+      },
+      {
+        id: 3,
+        planType: 'premium',
+        days: 10,
+        balance: 200,
+        withdrawals: []
+      }
+    ]);
+
+    expect(mockPrisma.timeDeposit.update).toHaveBeenCalledTimes(3);
+
+    expect(
+      result
+    ).toEqual([
+      {
+        id: 1,
+        planType: 'basic',
+        days: 10,
+        balance: 200,
+        withdrawals: [
+          {
+            id: 1,
+            timeDepositId: 1,
+            amount: 10,
+            date: new Date(2025, 5, 1, 12, 35)
+          }
+        ]
+      },
+      {
+        id: 2,
+        planType: 'student',
+        days: 10,
+        balance: 200,
+        withdrawals: []
+      },
+      {
+        id: 3,
+        planType: 'premium',
+        days: 10,
+        balance: 200,
+        withdrawals: []
+      }
+    ]);
   });
 });

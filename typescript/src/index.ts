@@ -1,19 +1,25 @@
-import express from 'express';
-import { TimeDepositController } from './adapters/rest/TimeDepositController';
-import { TimeDepositRepository } from './adapters/database/TimeDepositRepository';
-import { TimeDepositService } from './core/TimeDepositService';
-import { PrismaClient } from '../generated/prisma'
-import { TimeDepositCalculator } from './core/TimeDepositCalculator';
+import { PrismaClient } from '../generated/prisma';
+import Logger from './logging/logger';
+import { createApp } from './express';
 
-const app = express();
-app.use(express.json());
+const logger = new Logger("server");
+
 const prisma = new PrismaClient()
 
-const timeDepositRepository = new TimeDepositRepository(prisma);
-const timeDepositCalculator = new TimeDepositCalculator();
-const timeDepositService = new TimeDepositService(timeDepositRepository, timeDepositCalculator);
-const timeDepositController = new TimeDepositController(timeDepositService);
+createApp(prisma);
 
-app.use('/', timeDepositController.router);
+const terminate = async (cause: string) => {
+  logger.info(`Application termination ${cause}`);
+  await prisma.$disconnect();
+  process.exit(0);
+};
 
-app.listen(3000, () => console.log('Server running on port 3000'));
+process.on("SIGINT", async () => await terminate("SIGINT"));
+process.on("SIGTERM", async () => await terminate("SIGTERM"));
+process.on("exit", async () => await terminate("exit"));
+process.on("uncaughtExceptionMonitor", (reason, promise) => {
+  logger.error("Unhandled Rejection", reason, promise);
+});
+process.on("warning", (warning) => {
+  logger.warn("Application warning caught", warning);
+});
