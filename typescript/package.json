@@ -27,6 +27,7 @@
     "@types/express": "^5.0.3",
     "@types/jest": "^29.1.1",
     "@types/node": "18.7.18",
+    "jest-mock-extended": "^4.0.0",
     "nodemon": "^2.0.20",
     "prisma": "^6.12.0"
   },
