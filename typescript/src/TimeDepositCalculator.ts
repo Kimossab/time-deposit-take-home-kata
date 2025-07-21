@@ -1,4 +1,4 @@
-import { TimeDeposit } from './TimeDeposit'
+import { TimeDeposit } from './ports/dto/TimeDeposit'
 
 export class TimeDepositCalculator {
   public updateBalance(xs: TimeDeposit[]) {

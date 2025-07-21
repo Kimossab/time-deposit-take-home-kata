@@ -1,4 +1,4 @@
-import { TimeDeposit } from '../TimeDeposit'
+import { TimeDeposit } from '../ports/dto/TimeDeposit'
 import { TimeDepositCalculator } from '../TimeDepositCalculator'
 
 

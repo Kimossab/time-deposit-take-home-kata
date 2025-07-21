@@ -1,7 +1,13 @@
-import { TimeDeposit } from './TimeDeposit'
-import { TimeDepositCalculator } from './TimeDepositCalculator'
+import express from 'express';
+import { TimeDepositController } from './adapters/rest/TimeDepositController';
+import { TimeDepositService } from './core/TimeDepositService';
 
-const calc = new TimeDepositCalculator()
-const plans: TimeDeposit[] = [new TimeDeposit('basic', 1234567.0, 45)]
-const interest = calc.updateBalance(plans)
-console.log({ interest })
+const app = express();
+app.use(express.json());
+
+const timeDepositService = new TimeDepositService();
+const timeDepositController = new TimeDepositController(timeDepositService);
+
+app.use('/', timeDepositController.router);
+
+app.listen(3000, () => console.log('Server running on port 3000'));
