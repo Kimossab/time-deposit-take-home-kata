@@ -14,9 +14,7 @@ export class TimeDepositService implements TimeDepositServicePort {
 
     this.timeDepositCalculator.updateBalance(deposits);
 
-    //update database
-
-    return deposits;
+    return await this.timeDepositRepository.updateBalances(deposits);
   }
 
   async getTimeDeposits(): Promise<TimeDeposit[]> {

@@ -1,5 +1,6 @@
 
-import { PrismaClient } from "../../../generated/prisma";
+import { PrismaClient, TimeDeposit as TimeDepositModel } from "../../../generated/prisma";
+import { Decimal } from "../../../generated/prisma/runtime/library";
 import { TimeDeposit } from "../../ports/dto/TimeDeposit";
 import { Withdrawal } from "../../ports/dto/Withdrawal";
 import { TimeDepositRepositoryPort } from "../../ports/TimeDepositRepositoryPort";
@@ -19,5 +20,18 @@ export class TimeDepositRepository implements TimeDepositRepositoryPort {
         (withdrawal) => new Withdrawal(withdrawal.id, withdrawal.timeDepositId, withdrawal.amount.toNumber(), withdrawal.date)
       )
     ));
+  }
+
+  async updateBalances(deposits: TimeDeposit[]): Promise<TimeDeposit[]> {
+    const updatePromises = deposits.map(
+      deposit => this.prisma.timeDeposit.update({
+        data: { balance: Decimal(deposit.balance) },
+        where: { id: deposit.id }
+      })
+    );
+
+    await Promise.all(updatePromises);
+
+    return await this.getTimeDeposits();
   }
 }

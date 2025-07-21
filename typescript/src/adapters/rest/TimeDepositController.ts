@@ -6,7 +6,7 @@ export class TimeDepositController {
 
   constructor(private readonly timeDepositService: TimeDepositServicePort) {
     this.router.get('/time-deposit', this.getTimeDeposit.bind(this));
-    this.router.patch('/time-deposit', this.patchTimeDeposit.bind(this));
+    this.router.post('/time-deposit', this.postTimeDeposit.bind(this));
   }
 
   async getTimeDeposit(req: Request, res: Response) {
@@ -18,10 +18,10 @@ export class TimeDepositController {
     }
   }
 
-  async patchTimeDeposit(req: Request, res: Response) {
+  async postTimeDeposit(req: Request, res: Response) {
     try {
-      const timeDeposit = await this.timeDepositService.updateTimeDeposits()
-      res.status(204).json({ timeDeposit });
+      const timeDeposits = await this.timeDepositService.updateTimeDeposits()
+      res.status(200).json({ timeDeposits });
     } catch (err: any) {
       res.status(400).json({ error: err.message });
     }
