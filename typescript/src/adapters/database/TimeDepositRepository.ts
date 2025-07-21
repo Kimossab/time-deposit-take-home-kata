@@ -1,5 +1,5 @@
 
-import { PrismaClient, TimeDeposit as TimeDepositModel } from "../../../generated/prisma";
+import { PrismaClient } from "../../../generated/prisma";
 import { Decimal } from "../../../generated/prisma/runtime/library";
 import { TimeDeposit } from "../../ports/dto/TimeDeposit";
 import { Withdrawal } from "../../ports/dto/Withdrawal";

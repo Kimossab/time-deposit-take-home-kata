@@ -1,6 +1,5 @@
 import { PrismaClient } from "../../generated/prisma";
 import { PostgreSqlContainer, StartedPostgreSqlContainer } from "@testcontainers/postgresql";
-import { Client } from "pg";
 import request from "supertest";
 import { Express } from 'express';
 import { createApp } from "../express"
@@ -10,20 +9,11 @@ describe("Integration E2E test", () => {
   let container: StartedPostgreSqlContainer;
   let prismaClient: PrismaClient;
   let urlConnection: string;
-  let client: Client;
   let app: Express;
 
   beforeAll(async () => {
     container = await new PostgreSqlContainer().start();
 
-    client = new Client({
-      host: container.getHost(),
-      port: container.getPort(),
-      user: container.getUsername(),
-      password: container.getPassword(),
-      database: container.getDatabase(),
-    });
-    await client.connect();
     process.env.DATABASE_URL = container.getConnectionUri();
     urlConnection = container.getConnectionUri();
 
@@ -34,6 +24,7 @@ describe("Integration E2E test", () => {
         },
       },
     });
+
     execSync(`npx prisma migrate deploy`, {
       env: {
         ...process.env,
@@ -56,12 +47,10 @@ describe("Integration E2E test", () => {
     });
 
     app = createApp(prismaClient);
-
   }, 10000);
 
   afterAll(async () => {
     await prismaClient.$disconnect();
-    await client.end();
     await container.stop();
   });
 
