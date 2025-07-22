@@ -7,11 +7,11 @@ export class TimeDepositController {
   private readonly logger = new Logger("TimeDepositController");
 
   constructor(private readonly timeDepositService: TimeDepositServicePort) {
-    this.router.get('/time-deposit', this.getTimeDeposit.bind(this));
-    this.router.post('/time-deposit', this.postTimeDeposit.bind(this));
+    this.router.get('/time-deposit', this.getTimeDeposit);
+    this.router.post('/time-deposit', this.postTimeDeposit);
   }
 
-  async getTimeDeposit(req: Request, res: Response) {
+  getTimeDeposit = async (req: Request, res: Response) => {
     try {
       const timeDeposits = await this.timeDepositService.getTimeDeposits()
       res.status(200).json({ timeDeposits });
@@ -21,7 +21,7 @@ export class TimeDepositController {
     }
   }
 
-  async postTimeDeposit(req: Request, res: Response) {
+  postTimeDeposit = async (req: Request, res: Response) => {
     try {
       const timeDeposits = await this.timeDepositService.updateTimeDeposits()
       res.status(200).json({ timeDeposits });

@@ -1,4 +1,11 @@
 # Time Deposit Refactoring Kata - Take home assignment
+
+## The assignement was done in typescript
+
+The code can be found in the [typescript folder](./typescript/) of this repository.
+
+A link to the [README](./typescript/README.md).
+
 ## XA bank time deposit
 
 ## Context
