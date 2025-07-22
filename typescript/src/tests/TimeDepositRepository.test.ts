@@ -39,7 +39,15 @@ describe("TimeDepositRepository", () => {
         balance: Decimal(200),
         withdrawals: []
       },
-    ] as Prisma.TimeDepositGetPayload<{ include: { withdrawals: true } }>[])
+    ] as Prisma.TimeDepositGetPayload<{ include: { withdrawals: true } }>[]);
+
+    mockPrisma.$transaction.mockImplementation(async (cb: any) => {
+      if (typeof cb === "function") {
+        return await cb();
+      }
+      // If it's an array of promises, resolve them
+      return Promise.all(cb);
+    });
   })
 
   test('Should correctly get and map data from the database', async () => {
