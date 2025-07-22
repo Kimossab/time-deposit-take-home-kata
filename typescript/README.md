@@ -78,3 +78,87 @@ If you want to seed the database with initial test data, you can run:
 ```sh
 yarn seed
 ```
+
+# API and request examples
+
+## `GET` `/time-deposits`
+
+This endpoints retrieves all the time deposits with their withdrawals.
+
+### Request example
+
+```http
+GET /time-deposit HTTP/1.1
+Host: localhost:3000
+```
+
+### Response example
+
+```json
+{
+    "timeDeposits": [
+        {
+            "id": 1,
+            "planType": "basic",
+            "balance": 10000,
+            "days": 10,
+            "withdrawals": [
+                {
+                    "id": 1,
+                    "timeDepositId": 1,
+                    "amount": 200,
+                    "date": "2025-07-22T15:27:37.954Z"
+                }
+            ]
+        },
+        {
+            "id": 8,
+            "planType": "premium",
+            "balance": 40000,
+            "days": 182,
+            "withdrawals": []
+        }
+    ]
+}
+```
+
+## `POST` `/time-deposits`
+
+This endpoints updates the time deposits with the new balance including the interest gained.
+
+### Request example
+
+```http
+POST /time-deposit HTTP/1.1
+Host: localhost:3000
+```
+
+### Response example
+
+```json
+{
+    "timeDeposits": [
+        {
+            "id": 1,
+            "planType": "basic",
+            "balance": 10000,
+            "days": 10,
+            "withdrawals": [
+                {
+                    "id": 1,
+                    "timeDepositId": 1,
+                    "amount": 200,
+                    "date": "2025-07-22T15:27:37.954Z"
+                }
+            ]
+        },
+        {
+            "id": 8,
+            "planType": "premium",
+            "balance": 40166.67,
+            "days": 182,
+            "withdrawals": []
+        }
+    ]
+}
+```
