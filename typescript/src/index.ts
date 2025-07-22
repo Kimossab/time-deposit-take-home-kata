@@ -8,15 +8,15 @@ const prisma = new PrismaClient()
 
 createApp(prisma);
 
-const terminate = async (cause: string) => {
-  logger.info(`Application termination ${cause}`);
+const terminate = async (cause: string, code: number | undefined = undefined) => {
+  logger.info(`Application termination ${cause}`, { cause, code });
   await prisma.$disconnect();
   process.exit(0);
 };
 
 process.on("SIGINT", async () => await terminate("SIGINT"));
 process.on("SIGTERM", async () => await terminate("SIGTERM"));
-process.on("exit", async () => await terminate("exit"));
+process.on("exit", async (code: number) => await terminate("exit", code));
 process.on("uncaughtExceptionMonitor", (reason, promise) => {
   logger.error("Unhandled Rejection", reason, promise);
 });

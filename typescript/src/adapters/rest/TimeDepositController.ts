@@ -1,7 +1,6 @@
 import express, { Request, Response } from 'express';
 import { TimeDepositServicePort } from "../../ports/TimeDepositServicePort";
 import Logger from '../../logging/logger';
-import { error } from 'console';
 
 export class TimeDepositController {
   public readonly router = express.Router();

@@ -29,10 +29,10 @@ const loggerMiddleware = (
 };
 
 export const createApp = (prisma: PrismaClient) => {
-
   const app = express();
   app.use(express.json());
   app.use(loggerMiddleware);
+
   const timeDepositRepository = new TimeDepositRepository(prisma);
   const timeDepositCalculator = new TimeDepositCalculator();
   const timeDepositService = new TimeDepositService(timeDepositRepository, timeDepositCalculator);

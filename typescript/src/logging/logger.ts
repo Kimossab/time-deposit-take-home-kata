@@ -18,7 +18,7 @@ class Logger implements ILogger {
       format: format.combine(
         format.timestamp(),
         format.simple(),
-        format.colorize(),
+        format.colorize({ all: true }),
       ),
     });
     this._winston = createLogger({
