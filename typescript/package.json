@@ -13,7 +13,8 @@
     "start": "ts-node src/index.ts",
     "test": "jest src/tests/*.test.ts --watch --detectOpenHandles",
     "migrate:deploy": "prisma migrate deploy",
-    "migrate:dev": "prisma migrate dev"
+    "migrate:dev": "prisma migrate dev",
+    "seed": "prisma db seed"
   },
   "engines": {
     "node": ">=20.18.1"
