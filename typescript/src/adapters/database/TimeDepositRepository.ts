@@ -30,16 +30,19 @@ export class TimeDepositRepository implements TimeDepositRepositoryPort {
   }
 
   async updateBalances(deposits: TimeDeposit[]): Promise<TimeDeposit[]> {
-    const updatePromises = deposits.map(
-      deposit => this.prisma.timeDeposit.update({
-        data: { balance: Decimal(deposit.balance) },
-        where: { id: deposit.id }
-      })
-    );
 
     this.logger.info("Updating all the time deposit balances.");
 
-    await Promise.all(updatePromises);
+    await this.prisma.$transaction(async () => {
+      const updatePromises = deposits.map(
+        deposit => this.prisma.timeDeposit.update({
+          data: { balance: Decimal(deposit.balance) },
+          where: { id: deposit.id }
+        })
+      );
+
+      await Promise.all(updatePromises);
+    })
 
     this.logger.info("Updated all time deposit balances successfully.");
 
