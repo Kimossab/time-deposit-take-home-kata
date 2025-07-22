@@ -12,7 +12,7 @@ describe("Integration E2E test", () => {
   let app: Express;
 
   beforeAll(async () => {
-    container = await new PostgreSqlContainer().start();
+    container = await new PostgreSqlContainer("postgres:latest").start();
 
     process.env.DATABASE_URL = container.getConnectionUri();
     urlConnection = container.getConnectionUri();
