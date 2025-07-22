@@ -13,7 +13,7 @@
     "migrate:dev": "prisma migrate dev"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=20.18.1"
   },
   "dependencies": {
     "@babel/core": "7.19.1",
@@ -27,7 +27,7 @@
     "winston": "^3.17.0"
   },
   "devDependencies": {
-    "@testcontainers/postgresql": "10",
+    "@testcontainers/postgresql": "^11.3.2",
     "@types/express": "^5.0.3",
     "@types/jest": "^29.1.1",
     "@types/node": "18.7.18",
@@ -37,7 +37,7 @@
     "nodemon": "^2.0.20",
     "prisma": "^6.12.0",
     "supertest": "^7.1.3",
-    "testcontainers": "10"
+    "testcontainers": "^11.3.2"
   },
   "keywords": []
 }

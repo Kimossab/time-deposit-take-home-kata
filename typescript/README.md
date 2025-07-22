@@ -15,11 +15,11 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 ```
 
-This is optional you can choose to directly install node directly (node >= 16.0.0)
+This is optional you can choose to directly install node directly (node >= 20.18.1)
 
 ### Install node using nvm
 
-`nvm install 16.16.0`
+`nvm install 20.18.1`
 
 ### Install yarn (optional)
 
@@ -31,7 +31,25 @@ This is optional, you can choose to use `npm` itself.
 
 `yarn install` or `npm install`
 
+### Database
+
+This application uses PostgreSQL as the database. You can install it using your package manager or download it from [PostgreSQL's official site](https://www.postgresql.org/download/).
+
+Alternatively, you can use Docker with docker-compose to run PostgreSQL:
+
+```sh
+docker-compose up -d postgres
+```
+
+Make sure you create a `.env` file in the root directory to create the necessary url connection to the database. You can use the provided `.env.example` as a template, the value in the example is using the connection to the values defined in the docker-compose file for the postgres connection.
+
 ## Run the server
+
+Before you run the application you need to ensure the database is set up correctly, and the migrations are applied.
+
+### Deploy database migrations
+
+`yarn migrate:deploy`
 
 ### Dev server while watching
 
