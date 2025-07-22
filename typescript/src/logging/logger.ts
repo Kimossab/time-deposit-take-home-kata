@@ -14,18 +14,17 @@ class Logger implements ILogger {
   private _winston;
 
   constructor(module: string) {
+    const consoleTransport = new transports.Console({
+      format: format.combine(
+        format.timestamp(),
+        format.simple(),
+        format.colorize(),
+      ),
+    });
     this._winston = createLogger({
-      level: "silly",
+      level: process.env.NODE_ENV == "test" ? "error" : "silly",
       defaultMeta: { module },
-      transports: [
-        new transports.Console({
-          format: format.combine(
-            format.timestamp(),
-            format.simple(),
-            format.colorize(),
-          ),
-        }),
-      ],
+      transports: [consoleTransport],
     });
   }
 
