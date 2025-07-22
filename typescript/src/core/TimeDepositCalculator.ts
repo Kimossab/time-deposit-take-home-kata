@@ -24,8 +24,8 @@ export class TimeDepositCalculator {
     this.logger.debug("Updating balance for all time deposits", { count: timeDeposits.length });
 
     for (const deposit of timeDeposits) {
-      if (this.calculators[deposit.planType]) {
-        const interest = this.calculators[deposit.planType].calculate(deposit);
+      if (this.calculators[deposit.planType as PlanTypes]) {
+        const interest = this.calculators[deposit.planType as PlanTypes].calculate(deposit);
         deposit.balance += interest;
       }
     }

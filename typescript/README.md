@@ -1,5 +1,13 @@
 # To run the code
 
+## Docker
+
+If you have Docker installed, you can run the application using Docker Compose. This is the easiest way to get started.
+
+```sh
+docker compose up
+```
+
 ## Installation
 
 ### Install nvm (optional)
@@ -38,7 +46,7 @@ This application uses PostgreSQL as the database. You can install it using your 
 Alternatively, you can use Docker with docker-compose to run PostgreSQL:
 
 ```sh
-docker-compose up -d postgres
+docker compose up -d postgres
 ```
 
 Make sure you create a `.env` file in the root directory to create the necessary url connection to the database. You can use the provided `.env.example` as a template, the value in the example is using the connection to the values defined in the docker-compose file for the postgres connection.
@@ -62,3 +70,11 @@ Before you run the application you need to ensure the database is set up correct
 ### Run server
 
 `yarn start`
+
+### Seed database
+
+If you want to seed the database with initial test data, you can run:
+
+```sh
+yarn seed
+```

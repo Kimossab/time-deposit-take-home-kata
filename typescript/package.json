@@ -5,6 +5,9 @@
   "author": "Sohail Yar Khan (Ikigai)",
   "license": "MIT",
   "main": "src/index.ts",
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
   "scripts": {
     "dev": "nodemon src/index.ts",
     "start": "ts-node src/index.ts",
