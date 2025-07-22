@@ -1,10 +1,10 @@
-import { PrismaClient, TimeDeposit } from '../generated/prisma';
+import { PrismaClient, Prisma } from '../generated/prisma';
 import { Decimal } from '../generated/prisma/runtime/library';
 
 const prisma = new PrismaClient();
 
-const data: TimeDeposit[] = [
-  { id: 1, balance: Decimal(10000), days: 10, planType: 'basic' },
+const data: Prisma.TimeDepositUncheckedCreateInput[] = [
+  { id: 1, balance: Decimal(10000), days: 10, planType: 'basic', withdrawals: { create: [{ id: 1, amount: Decimal(200), date: new Date() }] } },
   { id: 2, balance: Decimal(40000), days: 182, planType: 'basic' },
   { id: 3, balance: Decimal(90000), days: 400, planType: 'basic' },
   { id: 4, balance: Decimal(10000), days: 10, planType: 'student' },

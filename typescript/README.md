@@ -5,7 +5,7 @@
 If you have Docker installed, you can run the application using Docker Compose. This is the easiest way to get started.
 
 ```sh
-docker compose up
+docker compose up --build
 ```
 
 ## Installation
