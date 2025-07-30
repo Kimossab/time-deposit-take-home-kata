@@ -3,12 +3,14 @@ import { PlanInterestCalculator } from './plan-interest/PlanInterestCalculator';
 import { BasicPlanInterestCalculator } from './plan-interest/BasicPlanInterestCalculator';
 import { StudentPlanInterestCalculator } from './plan-interest/StudentPlanInterestCalculator';
 import { PremiumPlanInterestCalculator } from './plan-interest/PremiumPlanInterestCalculator';
+import { InternalPlanInterestCalculator } from './plan-interest/InternalPlanInterestCalculator';
 import Logger from '../logging/logger';
 
 enum PlanTypes {
   Basic = 'basic',
   Student = 'student',
   Premium = 'premium',
+  Internal = 'internal'
 }
 
 export class TimeDepositCalculator {
@@ -18,6 +20,7 @@ export class TimeDepositCalculator {
     [PlanTypes.Basic]: new BasicPlanInterestCalculator(),
     [PlanTypes.Student]: new StudentPlanInterestCalculator(),
     [PlanTypes.Premium]: new PremiumPlanInterestCalculator(),
+    [PlanTypes.Internal]: new InternalPlanInterestCalculator(),
   }
 
   public updateBalance(timeDeposits: TimeDeposit[]) {

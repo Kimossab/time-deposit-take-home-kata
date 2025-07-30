@@ -22,4 +22,63 @@ test('Should update balance for all deposits', () => {
   expect(plans.map(p => p.balance)).toEqual(
     [20000, 30025, 40033.33, 20000, 30000, 40100, 20000, 30125, 40166.67]
   )
-})
+});
+
+test('Should update balance for internal deposits', () => {
+  const plans = [
+    new TimeDeposit(1, 'internal', 10000, 50, []),
+    new TimeDeposit(2, 'internal', 10000, 400, []),
+  ];
+  const calculator = new TimeDepositCalculator();
+
+  calculator.updateBalance(plans);
+
+  expect(plans.map(p => p.balance)).toEqual(
+    [10083.33, 10000]
+  )
+});
+
+test('Should update balance for expired internal deposits that exceed the limit withdrawn to 0', () => {
+  const fortyDaysAgo = new Date();
+  const twentyDaysAgo = new Date();
+
+  fortyDaysAgo.setDate(fortyDaysAgo.getDate() - 40);
+  twentyDaysAgo.setDate(twentyDaysAgo.getDate() - 20);
+
+  const plans = [
+    new TimeDeposit(1, 'internal', 10000, 400, [
+      { amount: 3000, date: fortyDaysAgo, id: 1, timeDepositId: 1 },
+      { amount: 6000, date: twentyDaysAgo, id: 1, timeDepositId: 1 }
+    ])
+  ];
+  const calculator = new TimeDepositCalculator();
+
+  calculator.updateBalance(plans);
+
+  expect(plans.map(p => p.balance)).toEqual(
+    [0]
+  )
+});
+
+
+test('Should not update balance for expired internal deposits that exceed the limit withdrawn', () => {
+  const fortyDaysAgo = new Date();
+  const twentyDaysAgo = new Date();
+
+  fortyDaysAgo.setDate(fortyDaysAgo.getDate() - 40);
+  twentyDaysAgo.setDate(twentyDaysAgo.getDate() - 20);
+
+  const plans = [
+    new TimeDeposit(1, 'internal', 10000, 400, [
+      { amount: 6000, date: fortyDaysAgo, id: 1, timeDepositId: 1 },
+      { amount: 3000, date: twentyDaysAgo, id: 1, timeDepositId: 1 }
+    ])
+  ];
+  const calculator = new TimeDepositCalculator();
+
+  calculator.updateBalance(plans);
+
+  expect(plans.map(p => p.balance)).toEqual(
+    [10000]
+  )
+});
